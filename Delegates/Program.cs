@@ -6,20 +6,26 @@ using System.Threading.Tasks;
 
 namespace Delegates
 {
-    internal class Program
+    public delegate void RectangleDelete(double Width, double Height);
+    public class Rectangle
     {
-        public delegate int Operation(int x, int y);
-        public static int Add(int x, int y)
+        public void GetArea(double Width, double Height)
         {
-            return x + y;
-
+            Console.WriteLine(@"Area is {0}", (Width * Height));
+        }
+        public void GetPerimeter(double Width, double Height)
+        {
+            Console.WriteLine(@"Perimeter is {0}", (2 * (Width + Height)));
         }
         static void Main(string[] args)
         {
-            Operation myobj = new Operation(Add);
-            int ans=myobj.Invoke(30,40);
-            Console.WriteLine(ans);
-           
+            Rectangle rect = new Rectangle();
+            RectangleDelete rectDelegate = new RectangleDelete(rect.GetArea);
+            rectDelegate += rect.GetPerimeter;
+            rectDelegate(23.45, 67.89);
+            rectDelegate -= rect.GetPerimeter;
+            rectDelegate.Invoke(13.45, 76.89);
+            Console.ReadKey();
         }
     }
 }
